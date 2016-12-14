@@ -21,19 +21,16 @@ window.customElements.define('chatbatta-app', class ChatbattaApp extends HTMLEle
           box-sizing: border-box;
         }
 
-        .app-header {
+        .app-shell-header {
           display: flex;
           flex-direction: row;
           align-items: center;
           justify-content: center;
 
-          position: absolute;
-          top: 0;
-          left: 0;
+          position: relative;
           width: 100%;
           height: 64px;
           padding: 0 16px;
-          margin: 0 0 8px;
           background-color: var(--app-primary-color);
           color: #fff;
         }
@@ -46,18 +43,17 @@ window.customElements.define('chatbatta-app', class ChatbattaApp extends HTMLEle
           color: #ffc107;
         }
 
-        .content-container {
-          position: absolute;
-          padding-top: 64px;
+        .app-shell-layout {
+          position: relative;
           width: 100%;
         }
       </style>
 
-      <div class="app-header">
+      <div class="app-shell-header">
         <div class="main-title">Chatbatta</div>
       </div>
 
-      <div class="content-container">
+      <div class="app-shell-layout">
         <h1>I Live</h1>
       </div>
     `;
@@ -65,4 +61,33 @@ window.customElements.define('chatbatta-app', class ChatbattaApp extends HTMLEle
 
     shadowRoot.appendChild(instance);
   }
+
+  createdCallback() {
+
+  }
+
+  connectedCallback() {
+    window.customElements.whenDefined('chatbatta-app')
+      .then(() => {
+        console.log(this.localName + ' attached!');
+
+        var s = document.createElement('script');
+        s.defer = true;
+        s.src = '/src/chatbatta-chat-list.js';
+        document.head.appendChild(s);
+        s.onload = () => {
+          var el = document.createElement('chatbatta-chat-list');
+          this.shadowRoot.appendChild(el);
+        };
+      });
+  }
+
+  disconnectedCallback() {
+
+  }
+
+  attributeChangedCallback(attrName, oldVal, newVal) {
+
+  }
+
 });
