@@ -1,0 +1,23 @@
+{
+  "name": "ws-demo",
+  "version": "0.0.1",
+  "description": "Web Socket demo with ws",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ws"
+  ],
+  "author": "zumata <gary.theis@zumata.com> (https://github.com/motss)",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.14.0",
+    "socket.io": "^1.7.2",
+    "spdy": "^3.4.4",
+    "spdy-keys": "0.0.0",
+    "url": "^0.11.0",
+    "ws": "^1.1.1",
+    "wscat": "^1.1.0"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "ws-demo",
+  "description": "Web Socket demo with ws",
+  "main": "index.html",
+  "authors": [
+    "Zumata Authors <rong_sen.ng@zumata.com> (https://github.com/motss)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "ws"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
