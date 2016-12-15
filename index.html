@@ -6,15 +6,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <script>
-      window.Polymer = {
-        dom: 'shadow',
-        useNativeCSSProperties: true,
-        lazyRegister: 'max',
-      };
+      function ajax(src, doStuff = () => {}) {
+        const ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            doStuff && doStuff.call(this);
+          }
+        };
+
+        ajax.open('GET', src, true);
+        ajax.send();
+      }
+
+      function appendScript(content) {
+          const script = document.createElement('script');
+          script.innerHTML = content;
+          document.head.appendChild(script);
+      }
+
+      function loadScript(src) {
+        const script = document.createElement('script');
+        script.defer = true;
+        script.src = src;
+        document.head.appendChild(script);
+      }
+
+      const hasCustomElement = 'customElements' in window;
+      const hasShadowDOM = 'shadowRoot' in document.createElement('test-element');
+
+      if (hasCustomElement && hasShadowDOM) {
+        loadScript('src/chatbatta-app.js');
+      } else {
+        if (!hasCustomElement) {
+          ajax('/bower_components/custom-elements/custom-elements.min.js', function () {
+            appendScript(this.responseText);
+
+            if (!hasShadowDOM) {
+              ajax('/bower_components/shadydom/shadydom.min.js', function () {
+                appendScript(this.responseText);
+
+                loadScript('src/chatbatta-app.js');
+              });
+            } else {
+              loadScript('src/chatbatta-app.js');
+            }
+          });
+        }
+
+        console.info('Lazy loading Web Components polyfill...');
+      }
     </script>
   </head>
 
-  <script src="/src/chatbatta-app.js" defer></script>
   <body>
     <style>
       html,

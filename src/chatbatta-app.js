@@ -2,12 +2,26 @@ window.customElements.define('chatbatta-app', class ChatbattaApp extends HTMLEle
   constructor () {
     super(); // always call super() first in the ctor.
 
+    this.is = 'chatbatta-app';
+
     let shadowRoot = this.attachShadow({
       mode: 'open',
     });
     const t = document.createElement('template');
     t.innerHTML = `
       <style>
+        @supports not (:host) {
+          :root {
+            display: block;
+            position: relative;
+            box-sizing: border-box;
+
+            --app-primary-color: #2a56c6;
+            --app-secondary-color: #f50057;
+          }
+        }
+
+        :root,
         :host {
           display: block;
           position: relative;
@@ -55,6 +69,8 @@ window.customElements.define('chatbatta-app', class ChatbattaApp extends HTMLEle
 
       <div class="app-shell-layout">
         <h1>I Live</h1>
+
+        <chatbatta-chat-list></chatbatta-chat-list>
       </div>
     `;
     const instance = t.content.cloneNode(true);
@@ -67,18 +83,20 @@ window.customElements.define('chatbatta-app', class ChatbattaApp extends HTMLEle
   }
 
   connectedCallback() {
+    console.info(this.is + ' connected!');
+
     window.customElements.whenDefined('chatbatta-app')
       .then(() => {
-        console.log(this.localName + ' attached!');
-
+        console.info('lazy load when defined...');
+        
         var s = document.createElement('script');
         s.defer = true;
         s.src = '/src/chatbatta-chat-list.js';
         document.head.appendChild(s);
-        s.onload = () => {
-          var el = document.createElement('chatbatta-chat-list');
-          this.shadowRoot.appendChild(el);
-        };
+        // s.onload = () => {
+        //   var el = document.createElement('chatbatta-chat-list');
+        //   this.shadowRoot.appendChild(el);
+        // };
       });
   }
 

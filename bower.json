@@ -1,13 +1,15 @@
 {
-  "name": "ws-demo",
-  "description": "Web Socket demo with ws",
+  "name": "chatbatta-app",
+  "description": "Yet another chat app built with modern Web technologies",
   "main": "index.html",
   "authors": [
-    "Zumata Authors <rong_sen.ng@zumata.com> (https://github.com/motss)"
+    "Rong Sen Ng <wes_ngrongsen@hotmail.com> (https://github.com/motss)"
   ],
   "license": "MIT",
   "keywords": [
-    "ws"
+    "chatbatta",
+    "WebSocket",
+    "Web Components"
   ],
   "homepage": "",
   "ignore": [
@@ -16,5 +18,9 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "shadydom": "webcomponents/shadydom",
+    "shadycss": "webcomponents/shadycss"
+  }
 }
