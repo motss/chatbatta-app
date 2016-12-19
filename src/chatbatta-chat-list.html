@@ -1,0 +1,100 @@
+<template>
+  <style>
+    :host {
+      display: block;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .app-shell-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      position: relative;
+      width: 100%;
+      /*height: 64px;*/
+      padding: 24px 16px;
+      margin: 0 0 1px;
+      background-color: #fff;
+    }
+  </style>
+
+<div class="content-container"></div>
+
+</template>
+
+<script>
+  {
+    'use strict';
+
+    const doc = (document._currentScript || document.currentScript).ownerDocument;
+    const template = doc.querySelector('template');
+
+    window.customElements.define('chatbatta-chat-list', class ChatbattaChatList extends HTMLElement {
+      constructor () {
+        super(); // always call super() first in ctor.
+
+        this.is = 'chatbatta-chat-list';
+
+        let shadowRoot = this.attachShadow({
+        mode: 'open',
+        });
+        const instance = template.content.cloneNode(true);
+
+        shadowRoot.appendChild(instance);
+      }
+
+      connectedCallback() {
+        console.info(this.is + ' connected.');
+
+        // window.customElements.whenDefined(this.is)
+        //   .then(() => {
+        //     // TODO: Remove dummy data.
+        //     console.time('generate-dummy-chat-list-items');
+        //     this._generateDummyChatListItems();
+        //     console.timeEnd('generate-dummy-chat-list-items');
+        //   });
+      }
+
+      disconnectedCallback() {
+
+      }
+
+      static get observedAttributes() {
+        return [
+          '',
+        ];
+      }
+
+      attributeChangedCallback(attrName, oldVal, newVal) {
+
+      }
+
+      _generateDummyChatListItems() {
+        const dummyData = Array(1E6).fill(0);
+        let innerHTML = [];
+
+        for (let dummyDatum of dummyData) {
+          innerHTML.push(
+            `<div class="app-shell-item">'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean feugiat suscipit sem, et accumsan magna hendrerit ac. Cras in est eros. In suscipit elit id magna pellentesque, sit amet maximus turpis congue.'</div>`
+          );
+        }
+
+        this._dummyData = dummyData;
+        this._contentContainer.innerHTML = innerHTML.join('\n');
+
+        // Ready to be GC-ed.
+        innerHTML = null;
+      }
+
+      get _contentContainer() {
+        return this.shadowRoot.querySelector('.content-container');
+      }
+    });
+  }
+</script>

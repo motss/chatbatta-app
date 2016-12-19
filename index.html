@@ -31,11 +31,20 @@
         document.head.appendChild(script);
       }
 
+      function importHTML(src) {
+        const link = document.createElement('link');
+        link.setAttribute('async', '');
+        link.setAttribute('rel', 'import');
+        link.setAttribute('href', src);
+        document.head.appendChild(link);
+      }
+
       const hasCustomElement = 'customElements' in window;
       const hasShadowDOM = 'shadowRoot' in document.createElement('test-element');
 
       if (hasCustomElement && hasShadowDOM) {
-        loadScript('src/chatbatta-app.js');
+        // loadScript('src/chatbatta-app.js');
+        importHTML('/src/chatbatta-app.html');
       } else {
         if (!hasCustomElement) {
           ajax('/bower_components/custom-elements/custom-elements.min.js', function () {
@@ -45,10 +54,12 @@
               ajax('/bower_components/shadydom/shadydom.min.js', function () {
                 appendScript(this.responseText);
 
-                loadScript('src/chatbatta-app.js');
+                // loadScript('src/chatbatta-app.js');
+                importHTML('/src/chatbatta-app.html');
               });
             } else {
-              loadScript('src/chatbatta-app.js');
+              importHTML('/src/chatbatta-app.html');
+              // loadScript('src/chatbatta-app.js');
             }
           });
         }

@@ -1,44 +1,44 @@
-<template id="chatbatta-app-template">
-   <style>
+<template>
+  <style>
     :host {
-      display: block;
-      position: relative;
-      box-sizing: border-box;
+    display: block;
+    position: relative;
+    box-sizing: border-box;
 
-      --app-primary-color: #2a56c6;
-      --app-secondary-color: #f50057;
-    }
+    --app-primary-color: #2a56c6;
+    --app-secondary-color: #f50057;
+  }
 
-    * {
-      box-sizing: border-box;
-    }
+  * {
+    box-sizing: border-box;
+  }
 
-    .app-shell-header {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
+  .app-shell-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 
-      position: relative;
-      width: 100%;
-      height: 64px;
-      padding: 0 16px;
-      background-color: var(--app-primary-color);
-      color: #fff;
-    }
+    position: relative;
+    width: 100%;
+    height: 64px;
+    padding: 0 16px;
+    background-color: var(--app-primary-color);
+    color: #fff;
+  }
 
-    .main-title {
-      font-size: 20px;
-      text-transform: uppercase;
-      letter-spacing: 10px;
-      font-weight: 500;
-      color: #ffc107;
-    }
+  .main-title {
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+    font-weight: 500;
+    color: #ffc107;
+  }
 
-    .app-shell-layout {
-      position: relative;
-      width: 100%;
-    }
+  .app-shell-layout {
+    position: relative;
+    width: 100%;
+  }
   </style>
 
   <div class="app-shell-header">
@@ -53,65 +53,50 @@
 </template>
 
 <script>
-  ShadyCSS.prepareTemplate(myElementTemplate, 'chatbatta-app', 'div');
-  class ChatbattaApp extends HTMLDivElement {
-    connectedCallback() {
-      this.attachShadow({mode: 'open'});
-      this.shadowRoot.appendChild(
-        document.importNode(ChatbattaAppTemplate.content, true));
-      ShadyCSS.applyStyle(this);
-    }
-  }
+  {
+    'use strict';
 
-  customElements.define('chatbatta-app', ChatbattaApp, {extends: 'div'});
-  
-  window.customElements.define('chatbatta-app', class ChatbattaApp extends HTMLElement {
-    constructor () {
-      super(); // always call super() first in the ctor.
+    const doc = (document._currentScript || document.currentScript).ownerDocument;
+    const template = doc.querySelector('template');
 
-      this.is = 'chatbatta-app';
+    window.customElements.define('chatbatta-app', class ChatbattaApp extends HTMLElement {
+      constructor () {
+        super(); // always call super() first in the ctor.
 
-      let shadowRoot = this.attachShadow({
-        mode: 'open',
-      });
-      const t = document.createElement('template');
-      t.innerHTML = `
-       
-      `;
-      const instance = t.content.cloneNode(true);
+        this.is = 'chatbatta-app';
 
-      shadowRoot.appendChild(instance);
-    }
-
-    createdCallback() {
-
-    }
-
-    connectedCallback() {
-      console.info(this.is + ' connected!');
-
-      window.customElements.whenDefined('chatbatta-app')
-        .then(() => {
-          console.info('lazy load when defined...');
-          
-          var s = document.createElement('script');
-          s.defer = true;
-          s.src = '/src/chatbatta-chat-list.js';
-          document.head.appendChild(s);
-          // s.onload = () => {
-          //   var el = document.createElement('chatbatta-chat-list');
-          //   this.shadowRoot.appendChild(el);
-          // };
+        let shadowRoot = this.attachShadow({
+          mode: 'open',
         });
-    }
+        const instance = template.content.cloneNode(true);
 
-    disconnectedCallback() {
+        shadowRoot.appendChild(instance);
+      }
 
-    }
+      createdCallback() {
 
-    attributeChangedCallback(attrName, oldVal, newVal) {
+      }
 
-    }
+      connectedCallback() {
+        console.info(this.is + ' connected!');
 
-  });
+        window.customElements.whenDefined(this.is)
+          .then(() => {
+            console.info('lazy load when defined...');
+
+            importHTML([
+              '/src/chatbatta-chat-list.html',
+            ]);
+          });
+      }
+
+      disconnectedCallback() {
+
+      }
+
+      attributeChangedCallback(attrName, oldVal, newVal) {
+
+      }
+    });
+  }
 </script>

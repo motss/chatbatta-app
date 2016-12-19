@@ -1,0 +1,56 @@
+<template>
+  <style>
+    :host {
+      display: block;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+  </style>
+
+  
+
+</template>
+
+<script>
+  const doc = (document._currentScript || document.currentScript).ownerDocument;
+  const template = doc.querySelector('template');
+
+ window.customElements.define('hahha', class ahah extends HTMLElement  {
+   constructor () {
+     super(); // always call super() first in ctor.
+
+     this.is = '';
+
+     let shadowRoot = this.attachShadow({
+       mode: 'open',
+     });
+     const instance = template.content.cloneNode(true);
+
+     shadowRoot.appendChild(instance);
+   }
+
+   connectedCallback() {
+     
+   }
+
+   disconnectedCallback() {
+     
+   }
+
+   static get observedAttributes() {
+     return [
+       'agag',
+     ];
+   }
+
+   attributeChangedCallback(attrName, oldVal, newVal) {
+
+   }
+
+ });
+</script>
