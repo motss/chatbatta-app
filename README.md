@@ -3,7 +3,7 @@
 Just another unusual chat app built with the followings:
    - WebSocket
    - Web Components
-   - Vanilla ES5+
+   - Vanilla ES6+
    - Material Design with CSS Variables (aka CSS Custom Properties)
 
 ## License
