@@ -1,5 +1,7 @@
 # chatbatta-app
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/motss/chatbatta-app.svg)](https://greenkeeper.io/)
+
 Just another unusual chat app built with the followings:
    - WebSocket
    - Web Components
