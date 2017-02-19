@@ -1,0 +1,39 @@
+{
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "hosting": {
+    "public": ".",
+    "rewrites": [
+      {
+        "source": "**/!(*.js|*.html|*.css|*.json|*.svg|*.png|*.jpg|*.jpeg)",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          }, {
+            "key": "Cache-Control",
+            "value": "public, no-cache"
+          }
+        ]
+      }, {
+        "source": "**/*.@(js|html|css|json|svg|png|jpg|jpeg)",
+        "headers": [
+          {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+          }, {
+            "key": "Cache-Control",
+            "value": "public, no-cache"
+          }
+        ]
+      }
+    ]
+  }
+}

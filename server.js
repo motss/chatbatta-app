@@ -1,16 +1,20 @@
 const express = require('express');
-const app = express();
+const debug = require('debug');
+const path = require('path');
+
 const PORT = 8000;
-const server = require('spdy').createServer(require('spdy-keys'), app);
+
+const app = express();
+// const server = require('spdy').createServer(require('spdy-keys'), app);
+const server = require('http').Server(app);
 const io = require('socket.io')(server, {
   transports: [ 'websocket', 'polling', ],
 });
 
-app.use(express.static(__dirname));
-
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
+app.use(express.static(__dirname));
 
 io.on('connection', function (socket) {
   console.log('A user connected.', socket.id);
@@ -25,7 +29,6 @@ io.on('connection', function (socket) {
 });
 
 // HTTP/2 server with spdy.
-server.listen(PORT, function(res, req) {
-  console.log('server listening...', res, req);
-  console.log(`express-spdy v0 running at port ${PORT}.`);
+server.listen(PORT, async function() {
+  await console.log(`express-spdy v0 running at port ${PORT}.`);
 });

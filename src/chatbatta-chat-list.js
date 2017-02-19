@@ -49,6 +49,8 @@ window.customElements.define('chatbatta-chat-list', class ChatbattaChatList exte
     const instance = t.content.cloneNode(true);
 
     shadowRoot.appendChild(instance);
+
+    this._tasks = 0;
   }
 
   connectedCallback() {
@@ -69,19 +71,37 @@ window.customElements.define('chatbatta-chat-list', class ChatbattaChatList exte
   }
 
   _generateDummyChatListItems() {
-    const dummyData = Array(100).fill(0);
+    const dummyData = Array(1E7).fill(0);
     let innerHTML = [];
 
     for (let dummyDatum of dummyData) {
       innerHTML.push(
-        `<div class="app-shell-item">'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean feugiat suscipit sem, et accumsan magna hendrerit ac. Cras in est eros. In suscipit elit id magna pellentesque, sit amet maximus turpis congue.'</div>`
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean feugiat suscipit sem, et accumsan magna hendrerit ac. Cras in est eros. In suscipit elit id magna pellentesque, sit amet maximus turpis congue.'
       );
     }
 
-    this._contentContainer.innerHTML = innerHTML.join('\n');
+    this._innerHTML = innerHTML;
+
+    window.customElements.whenDefined(this.is)
+      .then(function () {
+        window.requestAnimationFrame(this._appendChild.bind(this));
+      }.bind(this));
 
     // Ready to be GC-ed.
     innerHTML = null;
+  }
+
+  _appendChild(deadline) {
+    const el = document.createElement('div');
+    
+    el.classList.add('app-shell-item');
+    el.textContent = this._innerHTML[this._tasks];
+    this._contentContainer.appendChild(el);
+    this._tasks = this._tasks + 1;
+
+    if (this._tasks < 1E5) {
+      window.requestAnimationFrame(this._appendChild.bind(this));
+    }
   }
 
   get _contentContainer() {

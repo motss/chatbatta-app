@@ -1,9 +1,10 @@
 {
-  "name": "ws-demo",
-  "version": "0.0.1",
+  "name": "chatbatta-app",
+  "version": "0.1.0",
   "description": "Web Socket demo with ws",
   "main": "index.js",
   "scripts": {
+    "start": "node --harmony-async-await index",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -12,12 +13,23 @@
   "author": "zumata <gary.theis@zumata.com> (https://github.com/motss)",
   "license": "MIT",
   "devDependencies": {
-    "express": "^4.14.0",
-    "socket.io": "^1.7.2",
-    "spdy": "^3.4.4",
-    "spdy-keys": "0.0.0",
     "url": "^0.11.0",
     "ws": "^1.1.1",
     "wscat": "^1.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/motss/chatbatta-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/motss/chatbatta-app/issues"
+  },
+  "homepage": "https://github.com/motss/chatbatta-app#readme",
+  "dependencies": {
+    "debug": "^2.6.0",
+    "express": "^4.14.0",
+    "socket.io": "^1.7.2",
+    "spdy": "^3.4.4",
+    "spdy-keys": "^0.0.0"
   }
 }

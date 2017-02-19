@@ -6,55 +6,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <script>
-      function ajax(src, doStuff = () => {}) {
-        const ajax = new XMLHttpRequest();
-        ajax.onreadystatechange = function () {
-          if (this.readyState == 4 && this.status == 200) {
-            doStuff && doStuff.call(this);
-          }
-        };
-
-        ajax.open('GET', src, true);
-        ajax.send();
-      }
-
-      function appendScript(content) {
-          const script = document.createElement('script');
-          script.innerHTML = content;
-          document.head.appendChild(script);
-      }
-
-      function loadScript(src) {
-        const script = document.createElement('script');
-        script.defer = true;
-        script.src = src;
-        document.head.appendChild(script);
-      }
-
-      const hasCustomElement = 'customElements' in window;
-      const hasShadowDOM = 'shadowRoot' in document.createElement('test-element');
-
-      if (hasCustomElement && hasShadowDOM) {
-        loadScript('src/chatbatta-app.js');
-      } else {
-        if (!hasCustomElement) {
-          ajax('/bower_components/custom-elements/custom-elements.min.js', function () {
-            appendScript(this.responseText);
-
-            if (!hasShadowDOM) {
-              ajax('/bower_components/shadydom/shadydom.min.js', function () {
-                appendScript(this.responseText);
-
-                loadScript('src/chatbatta-app.js');
-              });
-            } else {
-              loadScript('src/chatbatta-app.js');
-            }
+      const loadApp = (isPolyfiled) => {
+        if (isPolyfiled) {
+          [
+            'src/chatbatta-app.js',
+          ].map((import_) => {
+            const hi = document.createElement('script');
+            hi.setAttribute('src', import_);
+            hi.setAttribute('async', true);
+            document.head.appendChild(hi);
+          });
+        } else {
+          [
+            'src/chatbatta-app.html',
+          ].map((import_) => {
+            const hi = document.createElement('link');
+            hi.setAttribute('rel', 'import');
+            hi.setAttribute('async', true);
+            hi.setAttribute('src', import_);
           });
         }
+      };
 
-        console.info('Lazy loading Web Components polyfill...');
-      }
+      (() => {
+        // Feature detect which polyfill needs to be imported.
+        let polyfills = [];
+        if (!('import' in document.createElement('link'))) {
+          polyfills.push('hi');
+        }
+        if (!('attachShadow' in Element.prototype) || (window.ShadyDOM && window.ShadyDOM.force)) {
+          polyfills.push('sd');
+        }
+        if (!window.customElements || window.customElements.forcePolyfill) {
+          polyfills.push('ce');
+        }
+        if (!('content' in document.createElement('template')) || !window.Promise || !window.URL) {
+          polyfills.push('pf');
+        }
+
+        if (polyfills.length === 4) { // hi-ce-sd-pf is actually called lite.
+          polyfills = ['lite'];
+        }
+
+        if (polyfills.length) {
+          const loadShadyCSSPromises = () => {
+            console.info('Loading ShadyCSS...');
+            return Promise.all([
+              'apply-shim',
+              'custom-style-interface',
+              'scoping-shim',
+            ].map(js => new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.setAttribute('src', `bower_components/shadycss/${js}.min.js`);
+              script.setAttribute('defer', true);
+              script.onload = () => resolve(`Loaded: ${js}`);
+              script.onerror = () => reject(`Unable to load: ${js}`);
+              document.head.appendChild(script);
+            })));
+          };
+
+          const loadWebComponentsPolyfillPromises = () => {
+            console.info('Loading Web Components v1 polyfills...');
+            return new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.src = `bower_components/webcomponentsjs/webcomponents-${polyfills.join('-')}.js`;
+              script.async = true;
+              script.onload = () => {
+                console.log(window.customElements);
+                loadApp(true);
+
+                resolve(`Loaded Web Components v1 polyfills: ${polyfills}`);
+              };
+              script.onerror = () => reject(`Unable to load polyfills: ${polyfills}`);
+              document.head.appendChild(script);
+            });
+          };
+
+          loadShadyCSSPromises()
+            .then(() => {
+              return loadWebComponentsPolyfillPromises();
+            })
+            .catch(err => err && console.error(err));
+        } else {
+          console.info('Web Components v1 is natively supported');
+          window.requestAnimationFrame(() => {
+            window.dispatchEvent(new CustomEvent('WebComponentsReady'));
+            loadApp();
+          });
+        }
+      })();
     </script>
   </head>
 

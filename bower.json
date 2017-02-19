@@ -21,6 +21,7 @@
   ],
   "dependencies": {
     "shadydom": "webcomponents/shadydom",
-    "shadycss": "webcomponents/shadycss"
+    "shadycss": "webcomponents/shadycss",
+    "webcomponentsjs": "v1"
   }
 }
