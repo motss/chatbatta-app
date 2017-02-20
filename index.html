@@ -23,7 +23,8 @@
             const hi = document.createElement('link');
             hi.setAttribute('rel', 'import');
             hi.setAttribute('async', true);
-            hi.setAttribute('src', import_);
+            hi.setAttribute('href', import_);
+            document.head.appendChild(hi);
           });
         }
       };
@@ -150,13 +151,13 @@
         color: #ffc107;
       }
     </style>
-    
+
     <chatbatta-app>
       <div class="app-shell-header">
         <div class="main-title">Chatbatta</div>
       </div>
     </chatbatta-app>
-    
+
     <!-- Built with love using Polymer Starter Kit -->
   </body>
 </html>

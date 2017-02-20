@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const express = require('express');
 const debug = require('debug');
 const path = require('path');
@@ -29,6 +31,6 @@ io.on('connection', function (socket) {
 });
 
 // HTTP/2 server with spdy.
-server.listen(PORT, async function() {
-  await console.log(`express-spdy v0 running at port ${PORT}.`);
+server.listen(PORT, function() {
+  console.log(`express-spdy v0 running at port ${PORT}.`);
 });

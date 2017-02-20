@@ -11,14 +11,13 @@ window.customElements.define('chatbatta-chat-list', class ChatbattaChatList exte
     t.innerHTML = `
       <style>
         @supports not (:host) {
-          :root {
+          chatbatta-chat-list {
             display: block;
             box-sizing: border-box;
             position: relative;
           }
         }
-        
-        :root,
+
         :host {
           display: block;
           box-sizing: border-box;
@@ -63,11 +62,11 @@ window.customElements.define('chatbatta-chat-list', class ChatbattaChatList exte
   }
 
   disconnectedCallback() {
-    
+
   }
 
   attributeChangedCallback(attrName, oldVal, newVal) {
-    
+
   }
 
   _generateDummyChatListItems() {
@@ -93,7 +92,7 @@ window.customElements.define('chatbatta-chat-list', class ChatbattaChatList exte
 
   _appendChild(deadline) {
     const el = document.createElement('div');
-    
+
     el.classList.add('app-shell-item');
     el.textContent = this._innerHTML[this._tasks];
     this._contentContainer.appendChild(el);

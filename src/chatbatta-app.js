@@ -11,7 +11,7 @@ window.customElements.define('chatbatta-app', class ChatbattaApp extends HTMLEle
     t.innerHTML = `
       <style>
         @supports not (:host) {
-          :root {
+          chatbatta-app {
             display: block;
             position: relative;
             box-sizing: border-box;
@@ -21,7 +21,6 @@ window.customElements.define('chatbatta-app', class ChatbattaApp extends HTMLEle
           }
         }
 
-        :root,
         :host {
           display: block;
           position: relative;
@@ -88,7 +87,7 @@ window.customElements.define('chatbatta-app', class ChatbattaApp extends HTMLEle
     window.customElements.whenDefined('chatbatta-app')
       .then(() => {
         console.info('lazy load when defined...');
-        
+
         var s = document.createElement('script');
         s.defer = true;
         s.src = '/src/chatbatta-chat-list.js';
